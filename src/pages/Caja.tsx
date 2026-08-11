@@ -108,7 +108,10 @@ export function Caja() {
         }
       />
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
+      {/* En móvil, tres cifras de miles en una sola fila desbordaban (la de
+          Total quedaba cortada y aparecía scroll horizontal). Ahora: 2 columnas
+          —Ingresos y Egresos— con Total a lo ancho debajo; 3 en fila desde sm. */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-4">
         <StatCard
           label="Ingresos"
           value={<Money value={ingresos} />}
@@ -129,6 +132,7 @@ export function Caja() {
           icon={<Wallet className="w-5 h-5" />}
           tone="primary"
           loading={cargando}
+          className="col-span-2 sm:col-span-1"
         />
       </div>
 

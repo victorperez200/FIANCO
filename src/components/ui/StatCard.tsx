@@ -52,7 +52,7 @@ export function StatCard({
       {loading ? (
         <Skeleton className="h-8 w-24 mt-2" />
       ) : (
-        <p className="text-2xl font-extrabold text-ink mt-2 tabular-nums">{value}</p>
+        <p className="text-xl sm:text-2xl font-extrabold text-ink mt-2 tabular-nums">{value}</p>
       )}
 
       {hint && <p className="text-xs text-ink-muted mt-1">{hint}</p>}

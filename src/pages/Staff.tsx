@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Plus, Mail, Trash2, KeyRound } from 'lucide-react';
+import { Users, Plus, Mail, Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useRealtime } from '../lib/useRealtime';
 import { useToast } from '../lib/toast';
