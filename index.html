@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!--
+      `viewport-fit=cover` es lo que hace que env(safe-area-inset-*) devuelva
+      valores reales: sin el, la barra inferior queda bajo la barra de gestos.
+
+      Se elimino `maximum-scale=1.0, user-scalable=no`. Bloquear el zoom incumple
+      WCAG 2.1 SC 1.4.4 y deja sin salida a quien necesita ampliar para leer un
+      precio. El zoom vuelve a estar disponible.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Antes era #fe810c (naranja), un color que no existia en la paleta.
+         Ahora coincide con la superficie de la cabecera movil. -->
+    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="Fianco — gestion para colmados: ventas, inventario, fiao y caja." />
+
+    <title>Fianco</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Geist es la tipografia de interfaz; Geist Mono, solo para datos
+         secundarios (horas, montos de lista, unidades, etiquetas). Playfair
+         Display 700 se reserva al logotipo «Fianco» y nada mas lo usa. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

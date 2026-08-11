@@ -1,0 +1,118 @@
+@import './styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Evita el retardo tactil de 300ms y el rebote de "pull to refresh",
+     que en un TPV provoca recargas accidentales a mitad de una venta. */
+  html {
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+    overscroll-behavior-y: contain;
+  }
+
+  body {
+    @apply bg-canvas text-ink antialiased;
+    font-size: 16px;   /* nunca por debajo: en iOS <16px fuerza zoom al enfocar */
+    line-height: 1.5;
+  }
+
+  /* Un unico anillo de foco para toda la app. `:focus-visible` lo muestra al
+     navegar con teclado pero no al hacer clic con el raton. El color de foco
+     es azul cian, distinto del primary, para que se vea sobre botones azules. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid rgb(var(--color-ring));
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Las cifras de dinero se alinean en columna: sin esto, los digitos de
+     distinto ancho hacen "bailar" los totales al actualizarse en tiempo real. */
+  :where(table, [data-numeric]) {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  /* Los titulos largos de producto no deben desbordar la tarjeta. */
+  :where(h1, h2, h3, h4) {
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+}
+
+@layer components {
+  /* Contenedor estandar de pagina. Sustituye las 32 repeticiones de padding
+     suelto que habia por las 9 paginas. */
+  .page-shell {
+    @apply px-4 py-4 sm:px-6 lg:px-8 lg:py-6 max-w-[1600px] mx-auto w-full;
+  }
+
+  /* Toda tabla debe ir envuelta aqui: en movil hace scroll horizontal propio
+     en vez de romper el ancho del viewport. */
+  .table-scroll {
+    @apply -mx-4 sm:mx-0 overflow-x-auto overscroll-x-contain;
+  }
+
+  /* Fila de filtros deslizable, sin barra visible. Antes se usaba
+     `scrollbar-none`, que no existe en Tailwind y no hacia nada. */
+  .chip-row {
+    @apply flex gap-2 overflow-x-auto overscroll-x-contain pb-1;
+    scrollbar-width: none;
+  }
+  .chip-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Aberracion cromatica del logotipo: una franja cian a la izquierda y una
+     calida a la derecha, como un desalineado de impresion. Los desplazamientos
+     van en `em` para que el efecto escale con el tamano del logo y no se
+     convierta en un borron a 3xl.
+
+     El texto real conserva su color solido, asi que el contraste que mide WCAG
+     no cambia: la sombra solo asoma en el filo de cada letra. */
+  .logo-aberracion {
+    text-shadow:
+      -0.018em 0 0 rgb(56 189 248 / 0.55),
+      0.018em 0 0 rgb(251 146 60 / 0.4);
+  }
+
+  /* En modo alto contraste el sistema fija sus propios colores; dejar la sombra
+     solo emborrona el texto. */
+  @media (forced-colors: active) {
+    .logo-aberracion {
+      text-shadow: none;
+    }
+  }
+}
+
+@layer utilities {
+  /* Area segura real. Antes se usaba `safe-area-inset-bottom`, que tampoco
+     existe en Tailwind: la barra inferior quedaba bajo la barra de gestos. */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .h-safe-bottom {
+    height: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Respeta la preferencia del sistema de reducir movimiento. Obligatorio:
+   sin esto, las animaciones pueden provocar mareo o migrana. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
