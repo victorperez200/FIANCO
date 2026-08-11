@@ -162,9 +162,9 @@ export function Staff() {
       >
         <div className="space-y-3">
           <p className="flex items-start gap-2 p-3 rounded-lg bg-primary-50 text-primary-800 text-sm">
-            <KeyRound className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+            
             <span>
-              El cajero podrá vender, manejar inventario, fiao y caja. No podrá anular ventas ni eliminar productos.
+              El cajero podrá vender, dar fiao y ver la caja. No podrá anular ventas ni eliminar productos.
             </span>
           </p>
           <Input

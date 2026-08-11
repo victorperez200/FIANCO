@@ -20,7 +20,7 @@ solo lugar y en tiempo real.
 
 - **Dueño** — acceso total: anular ventas, eliminar productos/clientes,
   gestionar usuarios y abonar deudas vencidas.
-- **Cajero** — vender, inventario, fiao y caja del día a día.
+- **Cajero** — vender, fiao y caja del día a día.
 
 
 ## Tecnologías
@@ -31,17 +31,6 @@ solo lugar y en tiempo real.
 - **Iconos:** lucide-react · **Tipografías:** Geist / Geist Mono / Playfair Display.
 
 
-
-
-## Scripts
-
-| Comando            | Qué hace                                    |
-| ------------------ | ------------------------------------------- |
-| `npm run dev`      | Servidor de desarrollo (Vite) con HMR       |
-| `npm run build`    | Compila la app de producción a `dist/`      |
-| `npm run preview`  | Sirve localmente el build de producción     |
-| `npm run lint`     | Analiza el código con ESLint                |
-| `npm run typecheck`| Comprueba tipos con TypeScript sin emitir   |
 
 ## Backend (Supabase)
 
