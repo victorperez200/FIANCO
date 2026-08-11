@@ -46,7 +46,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: 'dashboard', label: 'Inicio', icon: LayoutDashboard, roles: ['dueño', 'cajero'], principal: true },
   { id: 'ventas', label: 'Vender', icon: ShoppingCart, roles: ['dueño', 'cajero'], principal: true },
-  { id: 'inventario', label: 'Inventario', icon: Package, roles: ['dueño', 'cajero'], principal: true },
+  { id: 'inventario', label: 'Inventario', icon: Package, roles: ['dueño'], principal: true },
   { id: 'fiao', label: 'Fiao', icon: HandCoins, roles: ['dueño', 'cajero'], principal: true },
   { id: 'clientes', label: 'Clientes', icon: Contact, roles: ['dueño', 'cajero'] },
   { id: 'caja', label: 'Caja', icon: Wallet, roles: ['dueño', 'cajero'] },

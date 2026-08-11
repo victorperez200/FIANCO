@@ -135,12 +135,16 @@ export function Dashboard({ onIrInventario }: { onIrInventario: () => void }) {
             icon={<Package className="w-5 h-5" />}
             tone="warning"
             loading={cargando}
-            onClick={onIrInventario}
+            /* Solo el dueño gestiona inventario: para el cajero la tarjeta es
+               informativa, sin acción «Reponer» que rebotaría a Inicio. */
+            onClick={esDueno ? onIrInventario : undefined}
             value={<span className="tabular-nums">{bajos} producto{bajos !== 1 ? 's' : ''}</span>}
             aux={
-              <span className="inline-flex items-center gap-0.5 text-primary-700 font-semibold">
-                Reponer <ChevronRight className="w-4 h-4" aria-hidden="true" />
-              </span>
+              esDueno ? (
+                <span className="inline-flex items-center gap-0.5 text-primary-700 font-semibold">
+                  Reponer <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                </span>
+              ) : undefined
             }
           />
         </div>

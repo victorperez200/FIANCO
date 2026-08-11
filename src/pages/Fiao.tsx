@@ -48,7 +48,7 @@ export function Fiao() {
   const [guardando, setGuardando] = useState(false);
   const [confirmarVencida, setConfirmarVencida] = useState<Deuda | null>(null);
 
-  const { data: deudas, cargando } = useRealtime<Deuda>({
+  const { data: deudas, cargando, recargar } = useRealtime<Deuda>({
     query: async () => {
       const { data, error } = await supabase
         .from('deudas')
@@ -82,7 +82,12 @@ export function Fiao() {
       if (d.estado !== 'saldada') entry.saldoTotal += parseFloat(String(d.saldo));
       if (d.estado === 'vencida') entry.tieneVencida = true;
     }
-    return Array.from(mapa.values()).sort((a, b) => b.saldoTotal - a.saldoTotal);
+    /* Un cliente cuya deuda quedó saldada (saldoTotal 0) desaparece de la vista
+       general: Fiao es «quién me debe». Solo reaparece bajo el filtro explícito
+       «Saldada», para poder revisar el historial de pagos. */
+    return Array.from(mapa.values())
+      .filter((e) => filtro === 'saldada' || e.saldoTotal > 0)
+      .sort((a, b) => b.saldoTotal - a.saldoTotal);
   }, [deudas, filtro, busqueda]);
 
   const totalFiao = deudas
@@ -135,6 +140,11 @@ export function Fiao() {
     toast.success(monto >= parseFloat(String(abonoDeuda.saldo)) ? 'Deuda saldada completamente' : 'Abono registrado');
     setAbonoDeuda(null);
     setMontoAbono('');
+    /* No se espera al evento de tiempo real de `deudas`: si esa tabla no está en
+       la publicación de Realtime, el evento no llega nunca y la lista quedaría
+       con el saldo viejo hasta cambiar de módulo y volver (que remonta Fiao y
+       recarga). Recargar aquí hace que el abono aparezca al instante. */
+    recargar();
   };
 
   /* ======================= Detalle de cliente ======================= */
