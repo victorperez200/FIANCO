@@ -30,7 +30,7 @@ export function Inventario() {
   const toast = useToast();
   const { perfil } = useAuth();
   const esDueno = perfil?.rol === 'dueño';
-  const { data: productos, cargando } = useRealtime<Producto>({
+  const { data: productos, cargando, recargar } = useRealtime<Producto>({
     query: async () => {
       const { data, error } = await supabase.from('productos').select('*').order('nombre');
       return { data, error };
@@ -101,25 +101,29 @@ export function Inventario() {
     if (editando) {
       const { error } = await supabase.from('productos').update(payload).eq('id', editando.id);
       if (error) toast.error('Error al actualizar el producto');
-      else { toast.success('Producto actualizado'); setEditando(null); }
+      else { toast.success('Producto actualizado'); setEditando(null); recargar(); }
     } else {
       const { error } = await supabase.from('productos').insert(payload);
       if (error) toast.error('Error al crear el producto');
-      else { toast.success('Producto creado'); setCreando(false); }
+      else { toast.success('Producto creado'); setCreando(false); recargar(); }
     }
     setGuardando(false);
   };
 
+  /* En los tres cambios se recarga a mano en vez de esperar el evento de tiempo
+     real de `productos`: si esa tabla no está en la publicación de Realtime, el
+     evento no llega y el producto nuevo/editado no aparecía hasta cambiar de
+     módulo (que remonta Inventario) o recargar la página. */
   const toggleActivo = async (p: Producto) => {
     const { error } = await supabase.from('productos').update({ activo: !p.activo }).eq('id', p.id);
     if (error) toast.error('Error al cambiar el estado del producto');
-    else toast.success(p.activo ? 'Producto desactivado' : 'Producto reactivado');
+    else { toast.success(p.activo ? 'Producto desactivado' : 'Producto reactivado'); recargar(); }
   };
 
   const eliminar = async (p: Producto) => {
     const { error } = await supabase.from('productos').delete().eq('id', p.id);
     if (error) toast.error('No se pudo eliminar (puede tener ventas asociadas)');
-    else toast.success('Producto eliminado');
+    else { toast.success('Producto eliminado'); recargar(); }
   };
 
   const abrirHistorial = async (p: Producto) => {
